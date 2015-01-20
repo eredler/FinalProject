@@ -212,11 +212,11 @@ abstract class Student{
 	    return "You got away with it, you lucky duck...";	    
 	} else if (f) {
 	    setGrade(getGrade() * 0.75);
-	    return "Aw, shucks! You were caught. Your teacher gives you a zero on the final and you get a lecture about academic dishonesty. Again.";
+	    return "<html>Aw, shucks! You were caught. Your teacher gives you a zero on the final and you get a lecture about academic dishonesty. Again.</html>";
 	}else {
 	    setGrade(getGrade() - 15);
 	    setStress(getStress() + 10);
-	    return "D'oh! You were caught! <br>Your teacher gave you a zero on the quiz and lowered your grade by 10 points.";
+	    return "D'oh! You were caught! <br>Your teacher gives you a zero on the quiz and lowered your grade by 10 points.";
 	}
     }
 
@@ -254,12 +254,12 @@ abstract class Student{
 	    socialize(2);
 	    return "<html>You surfed Facebook for a while, Facebook-stalking random aquaintances. Dang it! You accidentally liked a post from three years ago! Unlike, unlike, unlike!</html>";
 	} else {
-	    time = 7;
 	    if (time > 6) {
 		sleep(24-time);
 	    } else {
 		sleep(7-time);
 	    }
+	    time = 7;
 	    return "<html>You decided to turn in for the night and hit the hay. Good for you!</html>";
 	}
     }
@@ -277,9 +277,9 @@ abstract class Student{
 	    setStress(getStress() - 15);
 	    setEnergy(getEnergy() - 10);
 	    time += 2;
-	    return "You decided to act like a good friend and help. Go " + sing() + " SING!";
+	    return "<html>You decided to act like a good friend and help. Go " + sing() + " SING!</html>";
 	} else {
-	    return "You ditched your friend and went home. Some friend you are...";
+	    return "<html>You ditched your friend and went home. Some friend you are...</html>";
 	}
     }
 
