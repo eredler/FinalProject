@@ -125,9 +125,15 @@ created Student class and subclasses
 * added conclusion
 * calculated final grade
 * added quit and try again buttons 
-* FIX: try again button doesn't work
+* FIX: try again button doesn't work //fixed 1/20/15
 * fixed final grade scoring (was subtracting too much if you doze off, cut class, etc)
 * fixed other minor bugs
+
+<h4>
+1/20/15
+</h4>
+* fixed the try again button
+* added a Responses class so that the same string is not always returned when an event occurs
 
 <h3>
 To do list
@@ -136,7 +142,6 @@ To do list
 <h4>
 Most important
 </h4>
-* fix try again button
 
 <h4>
 Extra stuff

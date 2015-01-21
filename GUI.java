@@ -24,12 +24,14 @@ public class GUI extends JFrame implements ActionListener{
     private int afSchool = 3;
     private int inFinal = 3;
     private String s = "";
-    
-    Font font = new Font("Optima", Font.PLAIN, 16);
+    private JLabel extraSpace = new JLabel("<html><br><br><br></html>"); 
+    private JLabel tPic = new JLabel();
+    private JLabel dayNight = new JLabel();
+    Font font = new Font("Optima", Font.PLAIN, 20);
     Font eventFont = new Font("Optima", Font.PLAIN, 16);
     Font statsFont = new Font("Optima", Font.PLAIN, 14);
     Font buttonFont = new Font("Optima", Font.BOLD, 14);
-    Font resultFont = new Font("Optima", Font.BOLD, 36);
+    Font resultFont = new Font("Optima", Font.BOLD, 50);
     /////////////////////////
     public GUI(){
 	player = new Freshman();
@@ -46,7 +48,7 @@ public class GUI extends JFrame implements ActionListener{
 	stats = new JPanel();
 
 	this.setTitle("Stuyvesant Finals Week Simulator");
-   	this.setSize(800, 400);
+   	this.setSize(800, 600);
 	this.setLocation(100, 100);
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	window = this.getContentPane();
@@ -86,9 +88,9 @@ public class GUI extends JFrame implements ActionListener{
 	energy = new JLabel("energy: ");
 	energy.setBorder(BorderFactory.createEmptyBorder());
 	stats.add(energy);
-	time = new JLabel("time: ");
-	time.setBorder(BorderFactory.createEmptyBorder());
-	stats.add(time);
+	//	time = new JLabel("time: ");
+	//	time.setBorder(BorderFactory.createEmptyBorder());
+	//stats.add(time);
 	day = new JLabel("Today is ");
 	day.setBorder(BorderFactory.createEmptyBorder());
 	stats.add(day);
@@ -96,7 +98,7 @@ public class GUI extends JFrame implements ActionListener{
 	stress.setFont(statsFont);
 	energy.setFont(statsFont);
 	day.setFont(statsFont);
-	time.setFont(statsFont);
+	//	time.setFont(statsFont);
 	knowledge.setFont(statsFont);
     }
     public void setupInteractPanel(){
@@ -105,14 +107,14 @@ public class GUI extends JFrame implements ActionListener{
 	interact.setBorder(BorderFactory.createCompoundBorder(
            BorderFactory.createTitledBorder("Story"),
            BorderFactory.createRaisedBevelBorder()));
-	JLabel intro = new JLabel("<html>Welcome to the Stuyvesant Finals Week Simulator!<br>Please enter your name and choose a difficulty:</html>");
+	JLabel intro = new JLabel("<html>Welcome to the Stuyvesant Finals Week Simulator!<br>Please enter your name and choose a difficulty.<br> </html>");
 	llamo = new JTextField("Harry Potter");
 	llamo.setSize(5, 10);
 	interact.add(intro);
 	interact.add(llamo);
 	llamo.setFont(font);
 	addDifficultyOptions();
-
+	interact.add(extraSpace);
 	JButton next = new JButton("Next");
 	next.setActionCommand("next");
 	next.addActionListener(this);
@@ -120,7 +122,7 @@ public class GUI extends JFrame implements ActionListener{
 
 	next.setFont(buttonFont);
 	intro.setFont(eventFont);
-	next.setHorizontalAlignment(JLabel.CENTER);
+	next.setHorizontalAlignment(JButton.CENTER);
 	intro.setHorizontalAlignment(JLabel.CENTER);
     }
 
@@ -167,12 +169,19 @@ public class GUI extends JFrame implements ActionListener{
 	energy.setText("energy: " + e);
     }
     public void updateTime(int t){
-	if (t < 12){
-	    time.setText("time: " + t + " a.m.");
-	} else if (t == 12) {
-	    time.setText("time: " + t + " p.m.");
+	if (t <= 12){
+	    tPic.setIcon(new ImageIcon(GUI.class.getResource("/images/" + t + ".png")));
+	    tPic.setHorizontalAlignment(JLabel.CENTER);
 	} else {
-	    time.setText("time: " + (t-12) + " p.m.");
+	    tPic.setIcon(new ImageIcon(GUI.class.getResource("/images/" + (t-12) + ".png")));
+	    tPic.setHorizontalAlignment(JLabel.CENTER);
+	}
+	if (t > 6 && t < 19) {
+	    dayNight.setIcon(new ImageIcon(GUI.class.getResource("/images/sun.png")));
+	    dayNight.setHorizontalAlignment(JLabel.CENTER);
+	} else {	    
+	    dayNight.setIcon(new ImageIcon(GUI.class.getResource("/images/moon.png")));
+	    dayNight.setHorizontalAlignment(JLabel.CENTER);
 	}
     }
     public void updateDay(String d){
@@ -183,7 +192,9 @@ public class GUI extends JFrame implements ActionListener{
 	updateKnowledge(player.getKnow());
 	updateEnergy(player.getEnergy());
 	updateTime(player.time);
-	updateDay(days[dayi]);
+	updateDay(days[dayi]);	
+	stats.add(dayNight);
+	stats.add(tPic);
 	window.repaint();
     }
     public void reset(){
@@ -204,7 +215,7 @@ public class GUI extends JFrame implements ActionListener{
 
     public void startGame(){
         reset();
-	story.setText("<html><center>Hi, " + player + "! So you're a " + player.getLevel() + " at Stuyvesant, and it's finally time for the week everyone dreads...<br><br>Will you die in 5 days, or emerge victorious? It all depends on your choices...</center><br></html>");
+	story.setText("<html><center>Hi, " + player + "! So you're a " + player.getLevel() + " at Stuyvesant, and it's finally time for the week everyone dreads...<br><br>Will you die in 5 days, or emerge victorious? It all depends on your choices...</center><br><br><br> </html>");
 	interact.add(story);
 	JButton b = new JButton("Begin");
 	b.setActionCommand("begin");
@@ -228,14 +239,15 @@ public class GUI extends JFrame implements ActionListener{
 	player.setHomework(false);
 	String z = "";
 	if (dayi == 4){
-	    z = "<html>The dreaded day has finally arrived: Finals day.<br><br> You have three finals to take today, which will count for 25% of your overall grade. No pressure.<br><br></html>";
+	    z = "<html>The dreaded day has finally arrived: Finals day.<br><br> You have three finals to take today, which will count for 25% of your overall grade. No pressure.<br><br><br> </html>";
 	} else {
-	    z = "<html>It's a fresh, new day! <br>As usual, you wake up and instantly regret doing so. Time to get ready for school...<br></html>";
+	    z = "<html>It's a fresh, new day! <br>As usual, you wake up and instantly regret doing so. Time to get ready for school...<br><br><br> </html>";
 	}
 	story.setText(z);
 	interact.add(story);
 
 	int chance = player.calculateChanceNeg();
+	chance += 5;
 	if (r.nextInt(100) < chance && dayi != 4){
 	    int x = r.nextInt(4);
 	    switch (x) {
@@ -248,7 +260,7 @@ public class GUI extends JFrame implements ActionListener{
 	    case 2: q.setText(player.coffeeSpill());
 		displayResponse();
 		break;
-	    case 3: JLabel l = new JLabel("<html>Wait, wha... wh... AH-CHOO! <br>Guess you couldn't escape the flu forever... Should you stay or should you go (to school)?<br></html>");
+	    case 3: JLabel l = new JLabel("<html>Wait, wha... wh... AH-CHOO!<br>Guess you couldn't escape the flu forever... Should you stay or should you go (to school)?<br><br> </html>");
 		l.setFont(eventFont);
 		interact.add(l);
 		sickDayResponse();
@@ -257,9 +269,9 @@ public class GUI extends JFrame implements ActionListener{
 	}else{
 	    player.time += 2;
 	    if (dayi != 4){
-		q.setText("<html>Thankfully, the morning is uneventful and you get to school in one piece.</html>");
+		q.setText("<html>Thankfully, the morning is uneventful and you get to school in one piece.<br><br><br> </html>");
 	    } else {
-		q.setText("<html>You arrive at school on time and in one piece (although a part of you wishes you had 'accidentally' forgotten to set your alarm).</html>");
+		q.setText("<html>You arrive at school on time and in one piece (although a part of you wishes you had 'accidentally' forgotten to set your alarm).<br><br><br> </html>");
 	    }
 	    displayResponse();  
 	}
@@ -277,11 +289,14 @@ public class GUI extends JFrame implements ActionListener{
 	sickDay.add(go);
 	interact.add(stay);
 	interact.add(go);
+	interact.add(extraSpace);
 	
 	JButton b = new JButton("Submit");
 	b.setActionCommand("sickDayResponse");
 	b.addActionListener(this);
 	interact.add(b);
+	
+
 	
 	go.setFont(eventFont);	
 	stay.setFont(eventFont);
@@ -292,20 +307,21 @@ public class GUI extends JFrame implements ActionListener{
 	reset();
 	autoUpdate();
 	if (player.time == 9){
-	    story.setText("<html>You are in your first class of the day.</html>");
+	    story.setText("<html>You are in your first class of the day.<br><br> </html>");
 	}else if (player.time == 11){
-	    story.setText("<html>Another period of learning. At least it means lunch is closer.</html>");
+	    story.setText("<html>Another period of learning. At least it means lunch is closer.<br><br> </html>");
 	}else{
-	    story.setText("<html>One eternity later, you are finally in your last class of the day!</html>");
+	    story.setText("<html>One eternity later, you are finally in your last class of the day!<br><br> </html>");
+
 	}
+	story.setHorizontalAlignment(JLabel.LEFT);
 	interact.add(story);
 
 	int chance = player.calculateChanceNeg();
-
 	if (r.nextInt(100) < chance){
 	    int e = r.nextInt(3);
 	    switch (e) {
-	    case 0: JLabel l = new JLabel("<html>Your teacher decides to spring a pop quiz on your class!<br></html>");
+	    case 0: JLabel l = new JLabel("<html>Your teacher decides to spring a pop quiz on your class!<br><br> </html>");
 		l.setFont(eventFont);
 		interact.add(l);
 		popQuizResponse();
@@ -313,14 +329,14 @@ public class GUI extends JFrame implements ActionListener{
 	    case 1: q.setText(player.fireDrill());
 		displayResponse();
 		break;
-	    case 2: JLabel m = new JLabel("<html>What a surprise, the escalators leading up to your class are broken!<br></html>");
+	    case 2: JLabel m = new JLabel("<html>What a surprise, the escalators leading up to your class are broken! Do you want to endure the climb up the stairs, or just cut class?<br><br> </html>");
 		m.setFont(eventFont);
 		interact.add(m);
 		brokenEscalatorResponse();
 		break;
 	    }
 	} else {
-	    JLabel n = new JLabel("<html>Nothing special is happening. What should you do?<br></html>");
+	    JLabel n = new JLabel("<html>Nothing special is happening. What should you do?<br><br> </html>");
 	    n.setFont(eventFont);
 	    interact.add(n);
 	    classTimeResponse();
@@ -342,6 +358,7 @@ public class GUI extends JFrame implements ActionListener{
 	JButton b = new JButton("Submit");
 	b.setActionCommand("popQuizResponse");
 	b.addActionListener(this);
+	interact.add(extraSpace);
 	interact.add(b);
 
 	cheat.setFont(eventFont);
@@ -363,6 +380,7 @@ public class GUI extends JFrame implements ActionListener{
 	JButton b = new JButton("Submit");
 	b.setActionCommand("brokenEscalatorResponse");
 	b.addActionListener(this);
+	interact.add(extraSpace);
 	interact.add(b);
 
 	climb.setFont(eventFont);
@@ -386,6 +404,7 @@ public class GUI extends JFrame implements ActionListener{
 	interact.add(sleep);
 	interact.add(passNotes);
 	interact.add(learn);
+	interact.add(extraSpace);
 	JButton b = new JButton("Submit");
 	b.setActionCommand("classTimeResponse");
 	b.addActionListener(this);
@@ -405,24 +424,26 @@ public class GUI extends JFrame implements ActionListener{
 	player.checkTime();
 	autoUpdate();
 	if (player.time == 15){
-	    story.setText("<html>School's out for the day! Now you have some time to do whatever you want<br></html>");
+	    story.setText("<html>School's out for the day! Now you have some time to do whatever you want.<br><br> </html>");
 	}else{
-	    story.setText("<html>It sure is nice to be home.<br></html>");
+	    story.setText("<html>It sure is nice to be home.<br><br> </html>");
 	}
 	interact.add(story);
 
 	int chance = player.calculateChanceNeg();
-	chance -= 20;
+	chance -= 5;
 
 	if ((r.nextInt(100) < chance) && (player.time == 3)) {
-	    JLabel l = new JLabel("<html>Your friend asks you to help them rehearse for SING!. Of course, this will reduce your precious free time. What do you do?<br></html>");
+	    JLabel l = new JLabel("<html>Your friend asks you to help them rehearse for SING!. Of course, this will reduce your precious free time. What do you do?<br><br> </html>");
 	    l.setFont(eventFont);
 	    interact.add(l);
+	    interact.add(extraSpace);
 	    helpAFriendResponse();
 	} else {
-	    JLabel n = new JLabel("<html>Home sweet home! What do you want to do now?<br></html>");
+	    JLabel n = new JLabel("<html>Home sweet home! What do you want to do now?<br><br> </html>");
 	    n.setFont(eventFont);
 	    interact.add(n);
+	    interact.add(extraSpace);
 	    afterSchoolResponse();
 	}
     }
@@ -452,6 +473,7 @@ public class GUI extends JFrame implements ActionListener{
 	}
 	interact.add(facebook);
 	interact.add(sleep);
+	interact.add(extraSpace);
 	JButton b = new JButton("Submit");
 	b.setActionCommand("afterSchoolResponse");
 	b.addActionListener(this);
@@ -476,6 +498,7 @@ public class GUI extends JFrame implements ActionListener{
 	helpFriendGroup.add(no);
 	interact.add(yes);
 	interact.add(no);
+	interact.add(extraSpace);
 	JButton b = new JButton("Submit");
 	b.setActionCommand("helpAFriendResponse");
 	b.addActionListener(this);
@@ -500,7 +523,8 @@ public class GUI extends JFrame implements ActionListener{
 	    finalNum = "last";
 	}
 
-	JLabel l = new JLabel("<html>It's time for your " + finalNum + " final. All of your hard work (or not so hard work) comes down to this. What do you want to do?</html>");
+	JLabel l = new JLabel("<html>It's time for your " + finalNum + " final. All of your hard work (or not so hard work) comes down to this. What do you want to do?<br><br><br> </html>");
+
 	l.setFont(eventFont);
 	interact.add(l);
 	finalsDayResponse();
@@ -529,6 +553,7 @@ public class GUI extends JFrame implements ActionListener{
 	interact.add(cheat);
 	interact.add(sleep);
 	interact.add(take);
+	interact.add(extraSpace);
 	JButton b = new JButton("Submit");
 	b.setActionCommand("finalsDayResponse");
 	b.addActionListener(this);
@@ -548,12 +573,13 @@ public class GUI extends JFrame implements ActionListener{
 	reset();
 	autoUpdate();
       
-	story.setText("<html>You've survived finals week! It's been a tough few days, but (hopefully) it'll all pay off when you see your final grades.</html>");
+	story.setText("<html>You've survived finals week! It's been a tough few days, but (hopefully) it'll all pay off when you see your final grades.<br><br><br><br> </html>");
 	interact.add(story);
 	
 	JButton result = new JButton("See your results");
 	result.setActionCommand("result");
 	result.addActionListener(this);
+	interact.add(extraSpace);
 	interact.add(result);
 
 	result.setFont(buttonFont);
@@ -641,7 +667,9 @@ public class GUI extends JFrame implements ActionListener{
 	interact.add(z);
 	interact.add(l);
 	interact.add(e);
+	interact.add(extraSpace);
 	interact.add(again);
+	interact.add(extraSpace);
 	interact.add(quit);
 
     }
@@ -854,11 +882,13 @@ public class GUI extends JFrame implements ActionListener{
 
 	if (action.equals("playAgain")) {
 	    reset();
+	    player = new Freshman();
 	    stats.removeAll();
 	    stats.revalidate();
 	    window.repaint();
 	    setupStatsPanel();
 	    setupInteractPanel();
+	    autoUpdate();
 	}
 
 	if (action.equals("quit")) {
@@ -867,4 +897,3 @@ public class GUI extends JFrame implements ActionListener{
     }
     
 }
-
